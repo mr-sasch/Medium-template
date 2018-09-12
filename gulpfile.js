@@ -7,21 +7,21 @@ var stylus = require('gulp-stylus');
 
 gulp.task('styl', function () {
   // return gulp.src('app/blocks/*.styl')
-  return gulp.src('app/resources/styles/*.styl')
+  return gulp.src('app/templates/pages/**/*.styl')
   .pipe(stylus())
-  .pipe(gulp.dest('dist/styles/'))
+  .pipe(gulp.dest('dist/assets/'))
 });
 
 // Pug
 var pug = require('gulp-pug');
 
 gulp.task('pug', function() {
-  return gulp.src('src/templates/pages/**/*.pug')
+  return gulp.src('app/templates/pages/**/*.pug')
   // return gulp.src('app/pages/*.pug')
   .pipe(pug({
     pretty: true
   }))
-  .pipe(gulp.dest('public/static/pages/'))
+  .pipe(gulp.dest('dist/static/pages/'))
 });
 
 // Сервер (Medium)
@@ -41,7 +41,7 @@ gulp.task('server', function() {
   app.get('/static/*.*', function(req, res) {
     // регулярка для получения пути до шаблона
     var fileName = req.url.replace(/static\/|\..*$/g, '') || 'index';
-    res.render('src/templates/' + fileName, {}); (1)
+    res.render('app/templates/' + fileName, {}); (1)
   });
   // редирект на главную страницу
   app.get('/static', function(req, res) {
@@ -61,17 +61,17 @@ gulp.task('server', function() {
     logPrefix: 'Proxy to localhost:' + port,
   });
   // обновляем страницу, если обновились assets файлы
-  browserSync.watch('./public/assets/**/*').on('change', browserSync.reload);
+  browserSync.watch('./dist/assets/**/*').on('change', browserSync.reload);
   // обновляем страницу, если был изменен исходник шаблона
-  browserSync.watch('./src/templates/**/*').on('change', browserSync.reload);
+  browserSync.watch('./app/templates/**/*').on('change', browserSync.reload);
 });
 
 // Watch
 var watch = require('gulp-watch');
 
 gulp.task('watch', function() {
-  // gulp.watch('app/blocks/*.styl', ['styl']);
-  gulp.watch('src/templates/pages/**/*.pug', ['pug']);
+  gulp.watch('app/templates/pages/**/*.styl', ['styl']);
+  gulp.watch('app/templates/pages/**/*.pug', ['pug']);
   // gulp.watch('app/**/*.pug', ['pug']);
   // gulp.watch('app/resources/images/*', ['gulpCopy']);
 });
