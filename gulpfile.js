@@ -16,11 +16,12 @@ gulp.task('styl', function () {
 var pug = require('gulp-pug');
 
 gulp.task('pug', function() {
-  return gulp.src('app/pages/*.pug')
+  return gulp.src('src/templates/pages/**/*.pug')
+  // return gulp.src('app/pages/*.pug')
   .pipe(pug({
     pretty: true
   }))
-  .pipe(gulp.dest('dist/'))
+  .pipe(gulp.dest('public/static/pages/'))
 });
 
 // Сервер (Medium)
@@ -65,15 +66,14 @@ gulp.task('server', function() {
   browserSync.watch('./src/templates/**/*').on('change', browserSync.reload);
 });
 
-
-
 // Watch
 var watch = require('gulp-watch');
 
 gulp.task('watch', function() {
-  gulp.watch('app/blocks/*.styl', ['styl']);
-  gulp.watch('app/**/*.pug', ['pug']);
-  gulp.watch('app/resources/images/*', ['gulpCopy']);
+  // gulp.watch('app/blocks/*.styl', ['styl']);
+  gulp.watch('src/templates/pages/**/*.pug', ['pug']);
+  // gulp.watch('app/**/*.pug', ['pug']);
+  // gulp.watch('app/resources/images/*', ['gulpCopy']);
 });
 
 // gulpCopy
