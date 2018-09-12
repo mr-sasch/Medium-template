@@ -6,7 +6,6 @@ var gulp = require('gulp');
 var stylus = require('gulp-stylus');
 
 gulp.task('styl', function () {
-  // return gulp.src('app/blocks/*.styl')
   return gulp.src('app/templates/pages/**/*.styl')
   .pipe(stylus())
   .pipe(gulp.dest('dist/assets/'))
@@ -17,7 +16,6 @@ var pug = require('gulp-pug');
 
 gulp.task('pug', function() {
   return gulp.src('app/templates/pages/**/*.pug')
-  // return gulp.src('app/pages/*.pug')
   .pipe(pug({
     pretty: true
   }))
@@ -40,19 +38,19 @@ gulp.task('server', function() {
   // роутинг на наши страницы
   app.get('/static/*.*', function(req, res) {
     // регулярка для получения пути до шаблона
-    var fileName = req.url.replace(/static\/|\..*$/g, '') || 'index';
+    var fileName = req.url.replace(/static\/|\..*$/g, '') || 'home';
     res.render('app/templates/' + fileName, {}); (1)
   });
   // редирект на главную страницу
   app.get('/static', function(req, res) {
-    res.redirect('/static/index.html');
+    res.redirect('/static/pages/home.html');
   });
   var listener    = app.listen();
   var port        = listener.address().port;
   var browserSync = require('browser-sync').create();
   // proxy на локальный сервер на Express
   browserSync.init({
-    proxy: 'http://localhost:'   + port,
+    proxy: 'http://localhost:' + port,
     startPath: '/static/',
     notify: false,
     tunnel: false,
@@ -72,8 +70,6 @@ var watch = require('gulp-watch');
 gulp.task('watch', function() {
   gulp.watch('app/templates/pages/**/*.styl', ['styl']);
   gulp.watch('app/templates/pages/**/*.pug', ['pug']);
-  // gulp.watch('app/**/*.pug', ['pug']);
-  // gulp.watch('app/resources/images/*', ['gulpCopy']);
 });
 
 // gulpCopy
